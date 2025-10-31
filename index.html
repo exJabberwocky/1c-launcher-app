@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1C Launcher</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+.config-display { min-width: 180px; }
+.config-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  background: #27272a !important;
+  border: 1px solid #767678 !important;
+  border-radius: 8px !important;
+  color: white !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+}
+.config-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.config-icon { font-size: 14px; opacity: 0.8; }
+</style>
+</head>
+<body>
+    <div class="app-wrapper">
+        <header class="app-header">
+            <div class="header-left">
+                <span class="header-1c">1C</span><span class="header-launcher">_Launcher</span>
+            </div>
+            <div class="header-right">
+            <button id="theme-toggle" class="theme-btn" title="Сменить тему">
+                <img id="theme-icon" class="theme-icon" src="icons/moon-star.svg" alt="Тема">
+            </button>
+                <div class="search-wrapper">
+                    <input type="text" id="search-input" placeholder="Поиск по всем базам...">
+                </div>
+                <div class="config-display">
+  <button class="config-btn" id="config-btn">
+    <span class="config-name">Загрузка...</span>
+    <img src="icons/folder.svg" class="config-icon" alt="📁">
+  </button>
+</div>
+                <button class="btn btn-primary" id="add-base-btn">
+                    <img src="icons/Plus.svg" class="btn-icon" alt="Добавить">
+                    Добавить
+                </button>
+            </div>
+        </header>
+
+        <main class="database-container" id="database-list"></main>
+
+        <footer class="app-footer">
+            <div class="selection-info" id="selection-info">
+                Выбрано: 0
+            </div>
+            <div class="footer-actions">
+                <button class="btn btn-cancel" id="cancel-btn">Отмена</button>
+                <button class="btn btn-launch" id="launch-btn" disabled>
+                    <img src="icons/Play.svg" class="btn-icon" alt="Запуск">
+                    Запуск
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Модальное окно добавления -->
+    <div class="modal-overlay" id="add-base-modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Добавить новую базу</h2>
+            <form id="add-base-form">
+                <div class="form-group">
+                    <label for="new-category">Категория</label>
+                    <input type="text" id="new-category" required placeholder="Например, Аналитика">
+                </div>
+                <div class="form-group">
+                    <label for="new-name">Название базы</label>
+                    <input type="text" id="new-name" required placeholder="Например, analytics_prod">
+                </div>
+                <div class="form-group">
+                    <label for="new-address">Адрес HTTP</label>
+                    <input type="text" id="new-address" required placeholder="https://balance.mos.ru/analytics_prod">
+                </div>
+                <div class="form-group">
+                    <label for="new-login">Логин</label>
+                    <input type="text" id="new-login" required placeholder="BSMCOMS">
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Пароль</label>
+                    <input type="password" id="new-password" required placeholder="Пароль">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-cancel" id="modal-cancel-btn">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Прогресс запуска -->
+    <div class="modal-overlay" id="progress-modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Запуск баз...</h2>
+            <div class="progress-bar">
+                <div id="progress-fill" style="width: 0%;"></div>
+            </div>
+            <p id="progress-text">Подготовка...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

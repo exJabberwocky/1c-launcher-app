@@ -1,0 +1,526 @@
+/* Шрифты */
+@font-face {
+    font-family: 'HomeVideo-Bold';
+    src: local('HomeVideo-Bold'), url('./fonts/HomeVideo-Bold.otf') format('opentype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'HomeVideo-Regular';
+    src: local('HomeVideo-Regular'), url('./fonts/HomeVideo-Regular.otf') format('opentype');
+}
+@font-face {
+    font-family: 'AnonymousPro-Bold';
+    src: local('AnonymousPro-Bold'), url('./fonts/AnonymousPro-Bold.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'AnonymousPro-Regular';
+    src: local('AnonymousPro-Regular'), url('./fonts/AnonymousPro-Regular.ttf') format('truetype');
+}
+
+/* Глобальные стили и переменные */
+:root {
+    --bg-primary: #18181B;
+    --bg-secondary: #27272A;
+    --bg-tertiary: #3F3F46;
+    --border-color: #767678;
+    --text-primary: #fff;
+    --text-secondary: #fff;
+    --primary-color: #E3592E;
+    --primary-hover: #2ECC5A;
+    --launch-color: #00CFFF;
+    --launch-hover: #00B2E6;
+    --checkbox-color: #767678;
+    --font-family: 'AnonymousPro-Regular', sans-serif;
+}
+:root[data-theme="light"] {
+    --bg-primary: #F1EDEC;
+    --bg-secondary: #DFDBD8;
+    --bg-tertiary: #B8B8B8;
+    --border-color: #585858;
+    --text-primary: #000000;
+    --text-secondary: #585858;
+    --primary-color: #E3592E;
+    --primary-hover: #C84A27;
+    --launch-color: #000000;
+    --launch-hover: #222222;
+    --checkbox-color: #585858;
+    --bg-primary-rgb: 241, 237, 236;
+    --font-family: 'AnonymousPro-Regular', sans-serif;
+}
+
+/*  Заголовок адаптируется */
+.header-1c,
+.header-launcher {
+    color: var(--text-primary);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Заголовок */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 0;
+}
+.header-1c {
+    font-family: 'HomeVideo-Bold';
+    font-size: 20px;
+    font-weight: 700;
+}
+.header-launcher {
+    font-family: 'HomeVideo-Regular';
+    font-size: 20px;
+    font-weight: 400;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.search-wrapper {
+    position: relative;
+    width: 300px;
+}
+#search-input {
+width: 100%;
+padding: 9px 15px;
+background-color: var(--bg-secondary);
+border: 1px solid var(--border-color);
+border-radius: 8px;
+color: var(--text-primary);
+font-size: 14px;
+font-family: 'AnonymousPro-Regular';
+outline: none;
+transition: border-color 0.2s;
+}
+#search-input:focus {
+border-color: var(--primary-color);
+}
+
+/* Основной контейнер */
+.database-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+}
+.database-container::-webkit-scrollbar { width: 8px; }
+.database-container::-webkit-scrollbar-track { background: transparent; }
+.database-container::-webkit-scrollbar-thumb {
+    background-color: var(--bg-tertiary);
+    border-radius: 10px;
+}
+
+/* Группы категорий */
+.category-group {
+    margin-bottom: 16px;
+}
+.category-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: var(--bg-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.category-header:hover {
+    background-color: var(--hover-secondary, #313135);
+}
+[data-theme="light"] .category-header:hover {
+    background-color: #D0CFC8;
+}
+.category-header .chevron {
+    width: 20px;
+    height: 14px;
+    transition: transform 0.3s ease;
+}
+.category-group.expanded .chevron {
+    transform: rotate(90deg);
+}
+.category-header h3 {
+    font-family: 'AnonymousPro-Bold';
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+    flex-grow: 1;
+    padding-left: 12px;
+}
+.chevron {
+    filter: none;
+    transition: filter 0.2s;
+}
+
+[data-theme="light"] .chevron {
+    filter: brightness(0);
+}
+.item-count {
+    font-family: 'AnonymousPro-Regular';
+    font-size: 14px;
+    color: var(--text-secondary);
+    background-color: var(--bg-tertiary);
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+
+/* Элементы списка баз */
+.db-items-wrapper {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+/*     transition: max-height 0.3s ease-in-out; */
+}
+.category-group.expanded .db-items-wrapper {
+/*    max-height: 800px;
+    overflow-y: auto;
+    padding: 8px 0;*/
+}
+.db-item {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px 14px 50px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.15s;
+    cursor: pointer; /* Курсор для всей строки */
+}
+.db-item:hover {
+    background-color: var(--bg-secondary);
+}
+.db-item:last-child {
+    border-bottom: none;
+    border-radius: 0 0 8px 8px;
+}
+
+.col-select { flex: 0 0 40px; }
+.col-name {
+    flex: 1 1 30%;
+    font-family: 'AnonymousPro-Bold';
+    font-weight: 700;
+    user-select: none; /* Запрет выделения */
+    cursor: pointer; /* Курсор как для кнопки */
+}
+.col-address {
+    flex: 1 1 45%;
+    font-family: 'AnonymousPro-Regular';
+    color: var(--text-secondary);
+    user-select: none; /* Запрет выделения */
+    cursor: pointer; /* Курсор как для кнопки */
+}
+.col-login {
+    flex: 1 1 25%;
+    font-family: 'AnonymousPro-Regular';
+    color: var(--text-secondary);
+}
+
+/* Нижняя панель */
+.app-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    background-color: rgba(var(--bg-primary-rgb), 0.8);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+.selection-info {
+    color: var(--text-secondary);
+    font-family: 'AnonymousPro-Regular';
+    font-weight: 500;
+}
+.footer-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Кнопки */
+.btn {
+    padding: 9px 18px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'AnonymousPro-Bold';
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #000;
+}
+.btn-primary {
+    background-color: #E3592E;
+    color: #FFFFFF;
+}
+.btn-primary:hover {
+    background-color: #C84A27;
+}
+.btn-launch {
+    background-color: #000;
+    color: #FFF;
+}
+.btn-launch:hover:not(:disabled) {
+    background-color: #222;
+}
+
+.btn-primary img {
+    content: url('./icons/Plus.svg');
+}
+.btn-launch img {
+    content: url('./icons/Play.svg');
+}
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.btn-cancel {
+    background-color: var(--bg-secondary);
+    color: #FFF;
+}
+
+.btn-cancel:hover {
+    background-color: #3F3F46;
+}
+.btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+select {
+    padding: 9px 15px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'AnonymousPro-Regular';
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* Чекбоксы */
+input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--checkbox-color);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s;
+}
+input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+input[type="checkbox"]:checked::before {
+    content: '\2713';
+    font-size: 12px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+input[type="checkbox"]:indeterminate {
+    background-color: var(--bg-tertiary);
+    border-color: var(--checkbox-color);
+}
+input[type="checkbox"]:indeterminate::before {
+    content: '';
+    width: 10px;
+    height: 2px;
+    background-color: var(--text-primary);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Модальное окно */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background-color: var(--bg-secondary);
+    padding: 32px;
+    border-radius: 12px;
+    width: 450px;
+    border: 1px solid var(--border-color);
+}
+.modal-content h2 {
+    margin-bottom: 24px;
+    font-family: 'AnonymousPro-Bold';
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-family: 'AnonymousPro-Regular';
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+.form-group input {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: 'AnonymousPro-Regular';
+    font-size: 14px;
+}
+.form-group input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 32px;
+}
+
+/* Прогресс-бар */
+.progress-bar {
+    height: 8px;
+    background-color: var(--bg-tertiary);
+    border-radius: 4px;
+    margin: 16px 0;
+    overflow: hidden;
+}
+#progress-fill {
+height: 100%;
+background-color: var(--primary-color);
+transition: width 0.3s;
+}
+
+/* Стили для информационных окон */
+:where(.modal-content)::before {
+    content: url('/home/exdesign/scripts/1c_start/v6/icons/Info.svg');
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Конфиг кнопка */
+.config-display {
+  position: relative;
+  min-width: 200px;
+}
+
+.config-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 15px;
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'AnonymousPro-Regular';
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.config-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+.config-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 9px 15px !important;
+    background: var(--bg-secondary) !important;  /* #DFDBD8 Light */
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    color: var(--text-primary) !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    white-space: nowrap !important;
+}
+
+.config-btn:hover {
+    background: var(--bg-tertiary) !important;
+    border-color: var(--primary-color) !important;
+}
+
+/* 🔥 ФОРС LIGHT — ГАРАНТИЯ! */
+[data-theme="light"] .config-btn {
+    background: #DFDBD8 !important;  /* ТВОЙ ЦВЕТ! */
+}
+[data-theme="light"] .config-btn:hover {
+    background: #B8B8B8 !important;
+}
+
+.config-icon {
+    width: 16px !important;
+    height: 16px !important;
+    filter: brightness(0) invert(1) !important;  /* Белая Dark */
+    transition: filter 0.2s !important;
+}
+[data-theme="light"] .config-icon {
+    filter: brightness(0) !important;  /* Чёрная Light */
+}
+
+.theme-btn {
+    width: 32px !important;
+    height: 32px !important;
+    background: var(--bg-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+}
+.theme-btn:hover {
+    border-color: var(--primary-color) !important;
+}
+#update-modal .modal-content h2 { color: var(--primary-color); }
+#update-modal .btn-primary { background: var(--primary-color) !important; }
