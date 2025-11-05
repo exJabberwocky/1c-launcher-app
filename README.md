@@ -18,8 +18,8 @@
 #### Linux:
 
 ```
-chmod +x 1C-Launcher-1.0.1.AppImage
-./1C-Launcher-1.0.1.AppImage
+chmod +x 1C-Launcher-*.AppImage
+./1C-Launcher-*.AppImage
 ```
 
 #### Windows:
