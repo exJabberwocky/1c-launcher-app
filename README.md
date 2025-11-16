@@ -71,5 +71,5 @@ chmod +x 1C-Launcher-*.AppImage
 Пример 1c_bases.conf:
 
 ```
-ЗКГУ|emzkgu1|https://example.com/emzkgu1/1234|admin|qwerty123
+ЗКГУ|emzkgu1|https://example.com/emzkgu1/1234|LOGIN|PASSWORD
 ```
